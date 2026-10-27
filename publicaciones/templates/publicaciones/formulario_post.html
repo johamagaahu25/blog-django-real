@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if post %}Editar{% else %}Crear{% endif %} publicación</title>
+</head>
+<body>
+    <h1>{% if post %}Editar{% else %}Crear{% endif %} publicación</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="titulo">Título</label>
+        <input id="titulo" name="titulo" maxlength="200"
+               value="{{ post.titulo|default:'' }}" required>
+
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" name="contenido"
+                  required>{{ post.contenido|default:'' }}</textarea>
+
+        <label for="imagen">Imagen (opcional)</label>
+        <input id="imagen" type="file" name="imagen" accept="image/*">
+
+        {% if post.imagen %}
+            <p>Imagen actual:</p>
+            <img src="{{ post.imagen.url }}" alt="Imagen actual" width="200">
+        {% endif %}
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <a href="{% url 'lista_posts' %}">Cancelar</a>
+</body>
+</html>

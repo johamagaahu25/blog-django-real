@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Blog</title>
+</head>
+<body>
+    <h1>Mi Blog</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hola, {{ user.username }}.</p>
+        <a href="{% url 'crear_post' %}">Crear publicación</a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <a href="{% url 'registro' %}">Registrarse</a>
+    {% endif %}
+
+    <hr>
+
+    <form method="get">
+        <input type="text" name="q" value="{{ busqueda }}"
+               placeholder="Buscar publicaciones">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% for post in posts %}
+        <article>
+            <h2>
+                <a href="{% url 'detalle_post' post.pk %}">
+                    {{ post.titulo }}
+                </a>
+            </h2>
+
+            {% if post.imagen %}
+                <img src="{{ post.imagen.url }}"
+                     alt="{{ post.titulo }}" width="300">
+            {% endif %}
+
+            <p>{{ post.contenido|truncatewords:30 }}</p>
+            <p>Autor: {{ post.autor.username }}</p>
+        </article>
+        <hr>
+    {% empty %}
+        <p>No hay publicaciones{% if busqueda %} que coincidan con tu búsqueda{% endif %}.</p>
+    {% endfor %}
+</body>
+</html>
+

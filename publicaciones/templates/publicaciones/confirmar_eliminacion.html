@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar publicación</title>
+</head>
+<body>
+    <h1>¿Eliminar esta publicación?</h1>
+    <p>{{ post.titulo }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <a href="{% url 'detalle_post' post.pk %}">Cancelar</a>
+</body>
+</html>

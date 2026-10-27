@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.titulo }}</title>
+</head>
+<body>
+    <a href="{% url 'lista_posts' %}">Volver al inicio</a>
+
+    <h1>{{ post.titulo }}</h1>
+    <p>Autor: {{ post.autor.username }}</p>
+    <p>Publicado: {{ post.fecha_creacion|date:"d/m/Y H:i" }}</p>
+
+    {% if post.imagen %}
+        <img src="{{ post.imagen.url }}"
+             alt="{{ post.titulo }}" width="400">
+    {% endif %}
+
+    <p>{{ post.contenido|linebreaks }}</p>
+
+    {% if user == post.autor or user.is_staff %}
+        <a href="{% url 'editar_post' post.pk %}">Editar</a>
+        <a href="{% url 'eliminar_post' post.pk %}">Eliminar</a>
+    {% endif %}
+</body>
+</html>
